@@ -1,0 +1,112 @@
+{
+  "model": "TF-IDF (1-2 grams) + Logistic Regression",
+  "random_seed": 42,
+  "label_mapping": {
+    "negative": 0,
+    "neutral": 1,
+    "positive": 2
+  },
+  "training": {
+    "rows": 1400,
+    "class_distribution": {
+      "positive": 566,
+      "negative": 540,
+      "neutral": 294
+    }
+  },
+  "validation": {
+    "rows": 300,
+    "macro_f1": 0.5836919070033048,
+    "class_distribution": {
+      "negative": 115,
+      "neutral": 63,
+      "positive": 122
+    },
+    "per_class": {
+      "negative": {
+        "precision": 0.7304347826086957,
+        "recall": 0.7304347826086957,
+        "f1": 0.7304347826086957,
+        "support": 115
+      },
+      "neutral": {
+        "precision": 0.359375,
+        "recall": 0.36507936507936506,
+        "f1": 0.36220472440944884,
+        "support": 63
+      },
+      "positive": {
+        "precision": 0.6611570247933884,
+        "recall": 0.6557377049180327,
+        "f1": 0.6584362139917695,
+        "support": 122
+      }
+    },
+    "confusion_matrix": [
+      [
+        84,
+        16,
+        15
+      ],
+      [
+        14,
+        23,
+        26
+      ],
+      [
+        17,
+        25,
+        80
+      ]
+    ],
+    "classification_report": "              precision    recall  f1-score   support\n\n    negative       0.73      0.73      0.73       115\n     neutral       0.36      0.37      0.36        63\n    positive       0.66      0.66      0.66       122\n\n    accuracy                           0.62       300\n   macro avg       0.58      0.58      0.58       300\nweighted avg       0.62      0.62      0.62       300\n"
+  },
+  "test": {
+    "rows": 300,
+    "macro_f1": 0.6638968933499397,
+    "class_distribution": {
+      "negative": 116,
+      "neutral": 63,
+      "positive": 121
+    },
+    "per_class": {
+      "negative": {
+        "precision": 0.7931034482758621,
+        "recall": 0.7931034482758621,
+        "f1": 0.7931034482758621,
+        "support": 116
+      },
+      "neutral": {
+        "precision": 0.4406779661016949,
+        "recall": 0.4126984126984127,
+        "f1": 0.4262295081967213,
+        "support": 63
+      },
+      "positive": {
+        "precision": 0.76,
+        "recall": 0.7851239669421488,
+        "f1": 0.7723577235772358,
+        "support": 121
+      }
+    },
+    "confusion_matrix": [
+      [
+        92,
+        15,
+        9
+      ],
+      [
+        16,
+        26,
+        21
+      ],
+      [
+        8,
+        18,
+        95
+      ]
+    ],
+    "classification_report": "              precision    recall  f1-score   support\n\n    negative       0.79      0.79      0.79       116\n     neutral       0.44      0.41      0.43        63\n    positive       0.76      0.79      0.77       121\n\n    accuracy                           0.71       300\n   macro avg       0.66      0.66      0.66       300\nweighted avg       0.71      0.71      0.71       300\n"
+  },
+  "trained_at_utc": "2026-11-03T19:08:32.592091+00:00"
+}

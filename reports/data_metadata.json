@@ -1,0 +1,66 @@
+{
+  "dataset": "Yelp/yelp_review_full",
+  "source_api": "https://datasets-server.huggingface.co/rows",
+  "sample_size_requested": 2000,
+  "sample_size_after_deduplication": 2000,
+  "random_seed": 42,
+  "sampled_100_row_blocks": [
+    557,
+    578,
+    611,
+    832,
+    1307,
+    2808,
+    2845,
+    2927,
+    3334,
+    3417,
+    4243,
+    4524,
+    4660,
+    4777,
+    4942,
+    5016,
+    5106,
+    5457,
+    5568,
+    6333
+  ],
+  "label_mapping": {
+    "1-2 stars": "negative",
+    "3 stars": "neutral",
+    "4-5 stars": "positive"
+  },
+  "split_proportions": {
+    "train": 0.7,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "splits": {
+    "train": {
+      "rows": 1400,
+      "class_distribution": {
+        "positive": 566,
+        "negative": 540,
+        "neutral": 294
+      }
+    },
+    "validation": {
+      "rows": 300,
+      "class_distribution": {
+        "positive": 122,
+        "negative": 115,
+        "neutral": 63
+      }
+    },
+    "test": {
+      "rows": 300,
+      "class_distribution": {
+        "positive": 121,
+        "negative": 116,
+        "neutral": 63
+      }
+    }
+  },
+  "created_at_utc": "2026-11-03T19:07:31.468031+00:00"
+}
