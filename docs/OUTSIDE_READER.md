@@ -17,14 +17,36 @@ had to ask about.
 
 ## Message to send
 
-> Could you read this short case study and tell me three things? It is a project
-> writeup, about five minutes of reading: https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/
+### Azərbaycanca
+
+> Salam! Bir case study yazmışam və onun kənar oxucu üçün aydın olub-olmadığını
+> yoxlamaq istəyirəm. Oxumaq ~5 dəqiqə çəkir, heç bir texniki hazırlıq lazım deyil:
+> https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/
 >
+> Üç sual:
+> 1. Bir cümlə ilə: bu tətbiq nə edir və kim üçündür?
+> 2. Diaqrama baxanda: istifadəçi "Analyze" basandan nəticə görünənə kimi nə baş
+>    verir?
+> 3. İki dəfə oxumalı olduğun yer, ya da texniki olmayan adama qəribə gələcək
+>    hansısa termin var idi?
+>
+> Səmimi cavab daha faydalıdır — "başa düşmədim" də yaxşı cavabdır.
+
+### English
+
+> Hi! I wrote a short technical case study and I want to check whether it is
+> understandable without any context. It takes about five minutes and needs no
+> technical background:
+> https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/
+>
+> Three questions:
 > 1. In one sentence, what does the app do and who is it for?
-> 2. Looking at the architecture diagram, what happens between a user pressing
->    "Analyze" and seeing a label?
-> 3. Was there any part you had to read twice, or a term you would not expect a
->    non-specialist to know?
+> 2. Looking at the diagram, what happens between a user pressing "Analyze" and
+>    seeing a label?
+> 3. Was there any part you had to read twice, or a term a non-specialist would
+>    not know?
+>
+> An honest "I did not get this part" is more useful than a polite "looks good".
 
 ## Record
 
