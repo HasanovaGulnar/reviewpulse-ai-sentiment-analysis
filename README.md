@@ -1,17 +1,49 @@
 # ReviewPulse
 
-ReviewPulse is a local web app for small online sellers who want to understand
+ReviewPulse is a web app for small online sellers who want to understand
 customer-review sentiment without manually reading every review. A seller can
 analyze one review or upload a CSV batch. Each result is classified as
-**negative**, **neutral**, or **positive**, with a confidence score and a batch
-sentiment summary.
+**negative**, **neutral**, or **positive**, with a confidence score, a
+per-class probability breakdown and a batch sentiment summary.
+
+**Live app:** <https://bargain-merry-corps-postal.trycloudflare.com>
+
+> The link above is a Cloudflare quick tunnel from the development laptop. It is
+> public and shareable while the app and tunnel are running, but the URL changes
+> after a restart. The permanent deployment path is
+> [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+## First-time users (30 seconds)
+
+1. **Try it** — click an example (or paste an English review) and press
+   **Analyze review**. You get a label, a confidence score and the probability
+   for each class.
+2. **Batch CSV** — download the example CSV, upload it, choose the text column
+   and press **Analyze batch**. The enriched CSV is downloadable.
+3. **Feedback** — describe anything broken, confusing or missing. The app is
+   being tested, not launched.
+
+The model was trained on 2,000 English Yelp reviews. Held-out test macro F1 is
+**0.664**, and `neutral` is the weakest class (F1 0.43). The **Model & data** tab
+shows per-class results, the confusion matrix and an explicit limitations list —
+read it before trusting a label.
 
 This capstone integrates two techniques from Weeks 1–7:
 
 1. Classical NLP: TF-IDF features and Logistic Regression for review sentiment.
 2. Product delivery: a Streamlit interface that a non-technical user can use.
 
-It also includes local CSV usage logging as a small bonus feature.
+It also includes anonymous session logging, an in-app feedback form, and short
+error references for failed analyses.
+
+## Feedback from real users
+
+The **Feedback** tab records a category (bug / confusion / feature request /
+other), the page, the message and an anonymous session id. The question set,
+triage rules, tracking table and a Google Apps Script backend are in
+[docs/FEEDBACK.md](docs/FEEDBACK.md). Tester outreach text is in
+[docs/TESTER_MESSAGE.md](docs/TESTER_MESSAGE.md), and shipped fixes are
+documented before/after in [docs/BEFORE_AFTER.md](docs/BEFORE_AFTER.md).
 
 ## Demo flow
 
@@ -43,15 +75,20 @@ Run these commands from the project directory in PowerShell:
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python -m src.data_pipeline
-python -m src.train
+python -m src.data_pipeline   # only to rebuild the dataset
+python -m src.train           # only to rebuild the model artifact
 streamlit run app.py
 ```
 
-The first data command downloads a deterministic 2,000-review sample from the
-public `Yelp/yelp_review_full` dataset through Hugging Face's Dataset Server.
-It saves the sample and reproducible 70/15/15 stratified splits locally. The
-seed, sampled blocks, label distribution and source details are recorded in
+The trained artifact (`models/reviewpulse_sentiment.joblib`, 714 KB) is
+committed, so deployment does **not** need the data pipeline or a training run.
+Run those two commands only to reproduce the artifact. They require Python 3.13
+and scikit-learn 1.7.2, the versions used to build the committed model.
+
+The data command downloads a deterministic 2,000-review sample from the public
+`Yelp/yelp_review_full` dataset through Hugging Face's Dataset Server. It saves
+the sample and reproducible 70/15/15 stratified splits locally. The seed, sampled
+blocks, label distribution and source details are recorded in
 `reports/data_metadata.json`.
 
 Open the local Streamlit URL shown in the terminal, normally
@@ -61,13 +98,16 @@ Open the local Streamlit URL shown in the terminal, normally
 
 ### One review
 
-Open **Single review**, paste a review, then choose **Analyze review**.
+Open **Try it**, click an example or paste your own review, then choose
+**Analyze review**. The result shows the winning label, its confidence, and the
+probability for all three classes. Low-confidence results carry a warning.
 
 ### Batch CSV
 
-Open **Batch CSV**, upload any CSV that has a column containing review text,
-select that column, then choose **Analyze batch**. Download the enriched CSV
-when finished.
+Open **Batch CSV**, download the example CSV if you need a starting point,
+upload any CSV that has a column containing review text, select that column, then
+choose **Analyze batch**. Download the enriched CSV when finished. Batches are
+capped at 5,000 rows so a public instance stays responsive.
 
 Example CSV:
 
@@ -78,8 +118,9 @@ The size was different from the description.
 It is okay, but not special.
 ```
 
-Usage counts and timestamps are stored locally in `logs/usage.csv`. Review text
-is not logged.
+Anonymous usage events (session start, single/batch analysis, review counts) are
+stored in `logs/usage.csv`; feedback goes to `logs/feedback.csv` and errors to
+`logs/errors.csv`. Review text is never logged.
 
 ## Reproducibility and evaluation
 
@@ -99,6 +140,41 @@ python scripts/ui_smoke.py
 
 The latest local training run achieved test macro F1 **0.664**. Class-level
 results and the confusion matrix are in [reports/EVALUATION.md](reports/EVALUATION.md).
+
+The suite has 12 unit tests plus a non-interactive Streamlit smoke test that
+exercises the example button, the single-review path and the feedback form.
+
+## Deployment and monitoring
+
+- **Deployment:** [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers Streamlit
+  Community Cloud (permanent URL, Python 3.13, secrets), a Cloudflare quick
+  tunnel (the current temporary link) and Hugging Face Spaces, plus a
+  troubleshooting table for the common build failures.
+- **Uptime:** `.github/workflows/uptime.yml` pings `/_stcore/health` every 30
+  minutes. Set the repository variable `REVIEWPULSE_APP_URL` to the public URL.
+  For stricter checks, a free UptimeRobot monitor works without code changes.
+- **Unique sessions:** every browser session gets a random id and one
+  `session_start` row. The sidebar and **Model & data** tab show unique
+  sessions, analyses and review counts for the running instance. On a hosted
+  instance these counters reset when the app restarts; the optional webhook in
+  `docs/FEEDBACK.md` makes them durable.
+- **Errors:** failed predictions are logged with a short reference id that the
+  app shows to the tester, so a report can be matched to a log line.
+
+## Public deployment and user test
+
+| Requirement | Status |
+|---|---|
+| Live public URL | ✅ temporary Cloudflare tunnel; permanent Streamlit Cloud path documented |
+| First-time-user onboarding | ✅ in-app box + README “30 seconds” section |
+| In-app feedback form | ✅ categorized, anonymous session id, local + webhook backends |
+| 3+ external testers | ⏳ invite sent; feedback table ready in `docs/FEEDBACK.md` |
+| Categorized feedback | ⏳ categories and triage rules defined; rows pending testers |
+| At least 1 shipped fix | ✅ Fix 1 (low-confidence results) in `docs/BEFORE_AFTER.md`; ⏳ first tester-driven fix pending |
+| Before/after note | ✅ format and Fix 1 documented |
+| Uptime monitoring | ✅ scheduled health check |
+| Unique session count | ✅ sidebar + Model & data tab |
+| Lessons learned | ⏳ `docs/LESSONS.md` fills after the round |
 
 ## Project scope and reflection
 

@@ -1,0 +1,39 @@
+name: Uptime check
+
+on:
+  schedule:
+    # GitHub may delay scheduled runs on the free tier; this is a smoke alarm,
+    # not a paging system.
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the Streamlit health endpoint
+        env:
+          APP_URL: ${{ vars.REVIEWPULSE_APP_URL }}
+        run: |
+          if [ -z "$APP_URL" ]; then
+            echo "::error::Set the repository variable REVIEWPULSE_APP_URL to the public app URL."
+            exit 1
+          fi
+          url="${APP_URL%/}/_stcore/health"
+          code=$(curl -sS -o /tmp/health.txt -w "%{http_code}" --max-time 30 "$url" || true)
+          body=$(cat /tmp/health.txt 2>/dev/null || true)
+          echo "Checked $url"
+          echo "HTTP $code"
+          echo "Body: $body"
+          {
+            echo "### Uptime check"
+            echo ""
+            echo "- URL: $url"
+            echo "- HTTP: $code"
+            echo "- Body: $body"
+          } >> "$GITHUB_STEP_SUMMARY"
+          test "$code" = "200"
+          grep -qi "ok" /tmp/health.txt

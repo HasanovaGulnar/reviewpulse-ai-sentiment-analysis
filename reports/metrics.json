@@ -108,5 +108,5 @@
     ],
     "classification_report": "              precision    recall  f1-score   support\n\n    negative       0.79      0.79      0.79       116\n     neutral       0.44      0.41      0.43        63\n    positive       0.76      0.79      0.77       121\n\n    accuracy                           0.71       300\n   macro avg       0.66      0.66      0.66       300\nweighted avg       0.71      0.71      0.71       300\n"
   },
-  "trained_at_utc": "2026-11-03T19:08:32.592091+00:00"
+  "trained_at_utc": "2026-11-06T13:38:58.830775+00:00"
 }
