@@ -13,8 +13,9 @@ per-class probability breakdown and a batch sentiment summary.
 > after a restart. The permanent deployment path is
 > [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-**Case study:** [docs/index.md](docs/index.md) — the problem, an architecture
-diagram, three trade-offs and the honest results (about 950 words).
+**Case study (public):** <https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/>
+— the problem, an architecture diagram, three trade-offs and the honest results
+(about 950 words). Source: [docs/index.md](docs/index.md).
 
 ## First-time users (30 seconds)
 

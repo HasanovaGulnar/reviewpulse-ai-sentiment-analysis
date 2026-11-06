@@ -12,7 +12,7 @@ The interesting part was not the classifier. It was admitting where it fails:
 
 The case study covers the architecture, three trade-offs (classical vs transformer, committing the artifact vs training at boot, three classes vs two), and what I would fix next.
 
-Case study: <PUBLIC_CASE_STUDY_URL>
+Case study: https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/
 Code: https://github.com/HasanovaGulnar/reviewpulse-ai-sentiment-analysis
 
 #NLP #MachineLearning #DataScience #Python #Portfolio

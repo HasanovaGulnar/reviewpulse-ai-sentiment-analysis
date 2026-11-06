@@ -23,6 +23,21 @@
 | Unique session count | Done | Anonymous session id in `logs/usage.csv`; shown in the sidebar and Model & data tab |
 | Lessons learned | Pending | `docs/LESSONS.md` fills after the round |
 
+## Technical writeup and case study
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| Portfolio/LinkedIn tone | Done | `docs/index.md` written for a technical reader outside the program |
+| 600–1000 words | Done | 949 words (verified by script) |
+| Problem statement, 2–3 paragraphs | Done | "The problem" — 3 paragraphs, no project jargon |
+| Legible, accurate architecture diagram | Done | `docs/architecture.svg` — training, runtime and operations; rendered live on the public page |
+| 2+ non-obvious decisions with trade-offs | Done | Three: classical model vs transformer, committed artifact vs training at boot, three classes vs two |
+| Honest results incl. limitations | Done | Per-class table, macro F1 0.664, neutral F1 0.43, uncalibrated confidence, Yelp-bound vocabulary |
+| "What I'd improve" | Done | Five concrete next steps |
+| Bonus: published publicly | Done | <https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/> (GitHub Pages, source `main` / `docs`) |
+| Bonus: screenshots | Done | `docs/images/app-onboarding.png`, `docs/images/app-result.png` (live app, 2× DPI) |
+| Bonus: outside-reader confirmation | Pending | Ask one non-mentor to read the public page and confirm it is understandable without context |
+
 ## Verification completed locally
 
 - `python -m src.data_pipeline` — passed; deterministic 2,000-review dataset and splits created.
