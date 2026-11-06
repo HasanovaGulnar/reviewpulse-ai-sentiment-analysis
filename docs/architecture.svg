@@ -59,7 +59,7 @@
 
   <!-- RUNTIME -->
   <rect x="24" y="258" width="1192" height="356" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
-  <text class="zone" x="40" y="280">RUNTIME · STREAMLIT APP (SINGLE PROCESS)</text>
+  <text class="zone" x="40" y="280">RUNTIME · STREAMLIT APP (SINGLE PROCESS) · SERVED THIS ROUND THROUGH A CLOUDFLARE TUNNEL</text>
 
   <rect x="40" y="296" width="185" height="112" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
   <text class="box-title" x="132.5" y="326" text-anchor="middle">Browser (tester)</text>
@@ -123,8 +123,8 @@
 
   <rect x="340" y="668" width="330" height="92" rx="10" fill="#fff7ed" stroke="#f97316"/>
   <text class="box-title" x="505" y="698" text-anchor="middle">Streamlit Community Cloud</text>
-  <text class="box-line" x="505" y="720" text-anchor="middle">free CPU · rebuild on push</text>
-  <text class="box-line" x="505" y="738" text-anchor="middle">(or Cloudflare quick tunnel)</text>
+  <text class="box-line" x="505" y="720" text-anchor="middle">permanent target · rebuild on push</text>
+  <text class="box-line" x="505" y="738" text-anchor="middle">live now: Cloudflare quick tunnel</text>
 
   <rect x="720" y="668" width="330" height="92" rx="10" fill="#fff7ed" stroke="#f97316"/>
   <text class="box-title" x="885" y="698" text-anchor="middle">GitHub Actions · uptime</text>
