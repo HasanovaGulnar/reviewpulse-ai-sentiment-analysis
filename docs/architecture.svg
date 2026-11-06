@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="850" viewBox="0 0 1240 850" role="img" aria-labelledby="title desc">
+  <title id="title">ReviewPulse shipped architecture</title>
+  <desc id="desc">Offline training on 2,000 Yelp reviews produces a 714 KB TF-IDF and Logistic Regression artifact. The Streamlit app serves single reviews, batch CSV and feedback, with local logs and an optional webhook. GitHub pushes rebuild the app on Streamlit Community Cloud, and a GitHub Actions job checks its health endpoint.</desc>
+
+  <style>
+    .title { font: 700 22px "Segoe UI", Arial, sans-serif; fill: #0f172a; }
+    .sub { font: 400 12px "Segoe UI", Arial, sans-serif; fill: #64748b; }
+    .zone { font: 700 11px "Segoe UI", Arial, sans-serif; fill: #64748b; letter-spacing: 1.4px; }
+    .box-title { font: 600 14px "Segoe UI", Arial, sans-serif; fill: #0f172a; }
+    .box-line { font: 400 12px "Segoe UI", Arial, sans-serif; fill: #475569; }
+    .arrow-label { font: 400 10.5px "Segoe UI", Arial, sans-serif; fill: #64748b; }
+    .note { font: 400 11.5px "Segoe UI", Arial, sans-serif; fill: #64748b; }
+  </style>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-optional" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <rect width="1240" height="850" fill="#ffffff"/>
+
+  <text class="title" x="40" y="38">ReviewPulse — how the shipped system fits together</text>
+  <text class="sub" x="40" y="58">Blue: runtime · Grey: data and artifacts · Green: model · Orange: operations · Dashed: optional</text>
+
+  <!-- OFFLINE BUILD -->
+  <rect x="24" y="76" width="1192" height="166" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text class="zone" x="40" y="98">OFFLINE BUILD · REPRODUCIBLE</text>
+
+  <rect x="40" y="114" width="205" height="88" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text class="box-title" x="142.5" y="142" text-anchor="middle">Yelp Review Full</text>
+  <text class="box-line" x="142.5" y="162" text-anchor="middle">2,000 real reviews</text>
+  <text class="box-line" x="142.5" y="180" text-anchor="middle">seed 42</text>
+
+  <rect x="285" y="114" width="205" height="88" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text class="box-title" x="387.5" y="142" text-anchor="middle">70 / 15 / 15 split</text>
+  <text class="box-line" x="387.5" y="162" text-anchor="middle">train 1,400 · val 300</text>
+  <text class="box-line" x="387.5" y="180" text-anchor="middle">test 300</text>
+
+  <rect x="530" y="114" width="225" height="88" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text class="box-title" x="642.5" y="142" text-anchor="middle">TF-IDF + Logistic Regression</text>
+  <text class="box-line" x="642.5" y="162" text-anchor="middle">1–2 grams · 40k features</text>
+  <text class="box-line" x="642.5" y="180" text-anchor="middle">class_weight = balanced</text>
+
+  <rect x="795" y="114" width="265" height="88" rx="10" fill="#ecfdf5" stroke="#10b981"/>
+  <text class="box-title" x="927.5" y="142" text-anchor="middle">model.joblib · 714 KB</text>
+  <text class="box-line" x="927.5" y="162" text-anchor="middle">metrics.json + data_metadata.json</text>
+  <text class="box-line" x="927.5" y="180" text-anchor="middle">committed to Git → deploy</text>
+
+  <line x1="245" y1="158" x2="285" y2="158" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="265" y="151" text-anchor="middle">sample</text>
+  <line x1="490" y1="158" x2="530" y2="158" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="510" y="151" text-anchor="middle">fit</text>
+  <line x1="755" y1="158" x2="795" y2="158" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="775" y="151" text-anchor="middle">save</text>
+
+  <!-- RUNTIME -->
+  <rect x="24" y="258" width="1192" height="356" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text class="zone" x="40" y="280">RUNTIME · STREAMLIT APP (SINGLE PROCESS)</text>
+
+  <rect x="40" y="296" width="185" height="112" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text class="box-title" x="132.5" y="326" text-anchor="middle">Browser (tester)</text>
+  <text class="box-line" x="132.5" y="348" text-anchor="middle">Try it · Batch CSV</text>
+  <text class="box-line" x="132.5" y="366" text-anchor="middle">Model &amp; data · Feedback</text>
+
+  <rect x="285" y="296" width="285" height="112" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text class="box-title" x="427.5" y="326" text-anchor="middle">app.py</text>
+  <text class="box-line" x="427.5" y="348" text-anchor="middle">onboarding + examples</text>
+  <text class="box-line" x="427.5" y="366" text-anchor="middle">single review · batch CSV</text>
+  <text class="box-line" x="427.5" y="384" text-anchor="middle">feedback form</text>
+
+  <rect x="630" y="296" width="215" height="112" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text class="box-title" x="737.5" y="326" text-anchor="middle">src/service.py</text>
+  <text class="box-line" x="737.5" y="348" text-anchor="middle">clean → predict_proba</text>
+  <text class="box-line" x="737.5" y="366" text-anchor="middle">label + 3 probabilities</text>
+
+  <rect x="905" y="296" width="255" height="112" rx="10" fill="#ecfdf5" stroke="#10b981"/>
+  <text class="box-title" x="1032.5" y="326" text-anchor="middle">TF-IDF + Logistic Regression</text>
+  <text class="box-line" x="1032.5" y="348" text-anchor="middle">joblib artifact · cached</text>
+  <text class="box-line" x="1032.5" y="366" text-anchor="middle">CPU · milliseconds</text>
+
+  <line x1="225" y1="352" x2="285" y2="352" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="255" y="345" text-anchor="middle">HTTPS</text>
+  <line x1="570" y1="352" x2="630" y2="352" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="600" y="345" text-anchor="middle">text</text>
+  <line x1="845" y1="352" x2="905" y2="352" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="875" y="345" text-anchor="middle">predict</text>
+
+  <rect x="40" y="440" width="185" height="76" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+  <text class="box-title" x="132.5" y="468" text-anchor="middle">Enriched CSV</text>
+  <text class="box-line" x="132.5" y="488" text-anchor="middle">download</text>
+
+  <rect x="285" y="440" width="285" height="76" rx="10" fill="#fffbeb" stroke="#f59e0b" stroke-dasharray="5 4"/>
+  <text class="box-title" x="427.5" y="468" text-anchor="middle">Optional webhook</text>
+  <text class="box-line" x="427.5" y="488" text-anchor="middle">Google Sheets / Formspree</text>
+
+  <rect x="630" y="440" width="530" height="76" rx="10" fill="#f8fafc" stroke="#94a3b8"/>
+  <text class="box-title" x="895" y="468" text-anchor="middle">logs/usage.csv · feedback.csv · errors.csv</text>
+  <text class="box-line" x="895" y="488" text-anchor="middle">anonymous sessions · tester feedback · error references</text>
+
+  <line x1="132.5" y1="408" x2="132.5" y2="440" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="112" y="428" text-anchor="middle">CSV</text>
+
+  <polyline points="470,408 470,424 895,424 895,440" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="700" y="418" text-anchor="middle">one row per event</text>
+
+  <line x1="630" y1="478" x2="570" y2="478" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow-optional)"/>
+  <text class="arrow-label" x="600" y="470" text-anchor="middle">optional</text>
+
+  <text class="note" x="40" y="604">Logs are best-effort: the free Cloud filesystem resets on restart, so the webhook is what makes feedback durable.</text>
+
+  <!-- OPERATIONS -->
+  <rect x="24" y="632" width="1192" height="160" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text class="zone" x="40" y="654">OPERATIONS</text>
+
+  <rect x="40" y="668" width="250" height="92" rx="10" fill="#fff7ed" stroke="#f97316"/>
+  <text class="box-title" x="165" y="698" text-anchor="middle">GitHub · main</text>
+  <text class="box-line" x="165" y="720" text-anchor="middle">app + model + docs</text>
+  <text class="box-line" x="165" y="738" text-anchor="middle">public repo</text>
+
+  <rect x="340" y="668" width="330" height="92" rx="10" fill="#fff7ed" stroke="#f97316"/>
+  <text class="box-title" x="505" y="698" text-anchor="middle">Streamlit Community Cloud</text>
+  <text class="box-line" x="505" y="720" text-anchor="middle">free CPU · rebuild on push</text>
+  <text class="box-line" x="505" y="738" text-anchor="middle">(or Cloudflare quick tunnel)</text>
+
+  <rect x="720" y="668" width="330" height="92" rx="10" fill="#fff7ed" stroke="#f97316"/>
+  <text class="box-title" x="885" y="698" text-anchor="middle">GitHub Actions · uptime</text>
+  <text class="box-line" x="885" y="720" text-anchor="middle">GET /_stcore/health</text>
+  <text class="box-line" x="885" y="738" text-anchor="middle">every 30 minutes</text>
+
+  <line x1="290" y1="714" x2="340" y2="714" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text class="arrow-label" x="315" y="707" text-anchor="middle">push</text>
+
+  <line x1="720" y1="714" x2="670" y2="714" stroke="#f59e0b" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arrow-optional)"/>
+  <text class="arrow-label" x="695" y="707" text-anchor="middle">ping</text>
+
+  <text class="note" x="40" y="830">Free tier: no GPU, 1 GB RAM · inference in milliseconds · the 714 KB artifact is committed, so no dataset download at boot.</text>
+</svg>
