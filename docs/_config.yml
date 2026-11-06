@@ -2,3 +2,5 @@ title: ReviewPulse — technical case study
 description: A review-triage sentiment app for small sellers, and what it cost to make uncertainty visible.
 theme: jekyll-theme-cayman
 show_downloads: false
+# The page body has its own H1; without this Jekyll copies it into the banner too.
+titles_from_headings: false
