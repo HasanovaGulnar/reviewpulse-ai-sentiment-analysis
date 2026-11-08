@@ -1,9 +1,10 @@
 # Message to send testers
 
-Copy, replace nothing except the greeting, and send. The link is live while the
-app and tunnel processes are running.
+Copy, replace nothing except the greeting, and send. The link is permanent; the
+free tier sleeps after a long quiet period, so the first open can take a few
+seconds.
 
-**Live app:** https://bargain-merry-corps-postal.trycloudflare.com
+**Live app:** https://reviewpulse-gulnar.streamlit.app
 
 ---
 
@@ -11,7 +12,7 @@ app and tunnel processes are running.
 
 > Salam! Bir capstone layihəmi sınayıb 5 dəqiqəlik rəy verə bilərsən?
 >
-> **https://bargain-merry-corps-postal.trycloudflare.com**
+> **https://reviewpulse-gulnar.streamlit.app**
 >
 > Bu, müştəri rəylərinin tonunu (mənfi / neytral / müsbət) təyin edən kiçik bir tətbiqdir. Səndən heç bir hazırlıq tələb olunmur — sadəcə aç, bir-iki rəy yoxla və nə başa düşmədiyini yaz.
 >
@@ -22,7 +23,7 @@ app and tunnel processes are running.
 >
 > Xüsusilə bunlar maraqlıdır: tətbiqin nə etdiyi ilk baxışda aydın idi? Nəticə gözlədiyin kimi idi? Nə çatışmır?
 >
-> Rəyin anonim sessiya ID-si ilə saxlanılır, rəy mətnin isə heç yerə yazılmır. Link müvəqqətidir — açılmasa, mənə yaz.
+> Rəyin anonim sessiya ID-si ilə saxlanılır, rəy mətnin isə heç yerə yazılmır. Link daimidir; ilk açılış bir neçə saniyə çəkə bilər.
 
 ---
 
@@ -30,7 +31,7 @@ app and tunnel processes are running.
 
 > Hi! Could you spend 5 minutes testing my capstone project and leaving feedback?
 >
-> **https://bargain-merry-corps-postal.trycloudflare.com**
+> **https://reviewpulse-gulnar.streamlit.app**
 >
 > It classifies customer reviews as negative / neutral / positive. No preparation needed — just open it, try a couple of reviews, and tell me what confused you.
 >
@@ -41,7 +42,7 @@ app and tunnel processes are running.
 >
 > I am especially interested in: was it obvious what the app does? Did the result match what you expected? What is missing?
 >
-> Feedback is stored with an anonymous session id; your review text is not logged. The link is temporary — if it does not open, message me.
+> Feedback is stored with an anonymous session id; your review text is not logged. The link is permanent, though the free tier can take a few seconds to wake.
 
 ---
 

@@ -14,7 +14,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Check the Streamlit health endpoint
+      - name: Check the app health endpoint
         env:
           APP_URL: ${{ vars.REVIEWPULSE_APP_URL }}
         run: |
@@ -22,18 +22,31 @@ jobs:
             echo "::error::Set the repository variable REVIEWPULSE_APP_URL to the public app URL."
             exit 1
           fi
-          url="${APP_URL%/}/_stcore/health"
-          code=$(curl -sS -o /tmp/health.txt -w "%{http_code}" --max-time 30 "$url" || true)
-          body=$(cat /tmp/health.txt 2>/dev/null || true)
-          echo "Checked $url"
-          echo "HTTP $code"
-          echo "Body: $body"
+          base="${APP_URL%/}"
+          status=000
+          body=""
+          for path in "/_stcore/health" "/~/+/healthz"; do
+            url="$base$path"
+            code=$(curl -sS -o /tmp/health.txt -w "%{http_code}" --max-time 30 "$url" || true)
+            text=$(head -c 200 /tmp/health.txt 2>/dev/null || true)
+            echo "Checked $url"
+            echo "HTTP $code"
+            echo "Body: $text"
+            if [ "$code" = "200" ] && grep -qi "ok" /tmp/health.txt; then
+              status=$code
+              body="ok"
+              echo "Healthy endpoint: $url"
+              break
+            fi
+            status=$code
+            body="$text"
+          done
           {
             echo "### Uptime check"
             echo ""
-            echo "- URL: $url"
-            echo "- HTTP: $code"
+            echo "- Base URL: $base"
+            echo "- HTTP: $status"
             echo "- Body: $body"
           } >> "$GITHUB_STEP_SUMMARY"
-          test "$code" = "200"
-          grep -qi "ok" /tmp/health.txt
+          test "$status" = "200"
+          test "$body" = "ok"

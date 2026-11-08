@@ -13,6 +13,25 @@ This repo is already deploy-ready:
 Official reference:
 <https://docs.streamlit.io/deploy/streamlit-community-cloud>
 
+## Current live deployment
+
+| Item | Value |
+|---|---|
+| URL | <https://reviewpulse-gulnar.streamlit.app> |
+| Host | Streamlit Community Cloud, free tier |
+| Branch tracked | `main` (every push redeploys) |
+| Python | 3.13.18 (matches the committed artifact) |
+| Health endpoint | `https://reviewpulse-gulnar.streamlit.app/~/+/healthz` → `ok` |
+| Uptime check | `.github/workflows/uptime.yml`, every 30 minutes |
+
+Two things to know about the free tier: the app sleeps after a long period
+without traffic and wakes on the next visit (the first load then takes a few
+seconds), and the container filesystem resets on restart, so `logs/*.csv` are
+per-instance unless `REVIEWPULSE_WEBHOOK_URL` is configured.
+
+To redeploy by hand: open the app in <https://share.streamlit.io>, **Manage
+app → Reboot**. To change the Python version: **Manage app → Settings**.
+
 ---
 
 ## Option A — Streamlit Community Cloud (permanent URL, recommended)
@@ -31,15 +50,18 @@ Official reference:
 
 5. Open **Advanced settings**:
    - **Python version:** `3.13` — the model artifact was built with Python
-     3.13.9 and scikit-learn 1.7.2. If 3.13 is unavailable, deploy on 3.12 and
-     check the logs; if the artifact fails to load, rebuild it locally with
-     `python -m src.train` under the same version.
+     3.13.9 and scikit-learn 1.7.2. The current deployment runs 3.13.18. If
+     3.13 is unavailable, deploy on 3.12 and check the logs; if the artifact
+     fails to load, rebuild it locally with `python -m src.train` under the same
+     version.
    - **Secrets** (optional, see below).
 6. Click **Deploy** and wait 2–4 minutes.
 7. Verify:
    - the app loads: `https://<your-subdomain>.streamlit.app`
    - the health endpoint returns `ok`:
-     `https://<your-subdomain>.streamlit.app/_stcore/health`
+     `https://<your-subdomain>.streamlit.app/~/+/healthz`
+     (Community Cloud serves the app itself behind a proxy, so
+     `/_stcore/health` returns the HTML shell rather than `ok` there.)
 8. Copy the URL into `README.md` and set the repo variable used by the uptime
    workflow:
 
@@ -90,10 +112,11 @@ Google Form.
 
 ---
 
-## Option B — Cloudflare quick tunnel (no hosting account)
+## Option B — Cloudflare quick tunnel (local demo, no hosting account)
 
-This is how the app is reachable today without creating a hosting account. It
-exposes the local Streamlit server through an HTTPS `trycloudflare.com` URL.
+Useful when you want a shareable HTTPS link from the laptop without deploying
+anything. It is **not** how ReviewPulse is published today: the live app runs on
+Streamlit Community Cloud (see the table at the top).
 
 ```powershell
 # terminal 1 — the app
@@ -118,7 +141,9 @@ Limits, and why this is not the permanent answer:
 - The URL changes every time `cloudflared` restarts.
 - The laptop must stay awake and connected; closing the terminal kills the app.
 - Free quick tunnels are rate-limited and not meant for production.
-- Use this for the first tester round now, and Option A for the link you keep.
+- If you point `REVIEWPULSE_APP_URL` at a tunnel, the uptime workflow will fail
+  as soon as the laptop sleeps — that is exactly what happened before the
+  Streamlit Cloud deployment.
 
 ---
 
@@ -138,10 +163,12 @@ ephemeral, so the same feedback guidance applies.
 
 ## Monitoring and session counts
 
-- **Uptime:** `.github/workflows/uptime.yml` pings `/_stcore/health` every 30
-  minutes and fails the job when the app is down. History is the Actions tab.
-  Set `REVIEWPULSE_APP_URL` first. GitHub may delay scheduled runs on the free
-  tier; for stricter checks use a free UptimeRobot monitor (5-minute interval).
+- **Uptime:** `.github/workflows/uptime.yml` checks the app every 30 minutes and
+  fails the job when it is down. It tries `/_stcore/health` first and falls back
+  to `/~/+/healthz`, the endpoint Streamlit Community Cloud answers with `ok`.
+  History is the Actions tab. Set `REVIEWPULSE_APP_URL` first. GitHub may delay
+  scheduled runs on the free tier; for stricter checks use a free UptimeRobot
+  monitor (5-minute interval).
 - **Errors:** the app logs unhandled prediction errors to `logs/errors.csv` and
   shows the tester a short reference id (`Reference: 1a2b3c4d`). On Cloud this
   file is ephemeral — forward it with the webhook or read the app logs.
@@ -173,7 +200,7 @@ streamlit run app.py
 - [ ] Repo pushed to `main`
 - [ ] `git ls-files models/` shows `reviewpulse_sentiment.joblib`
 - [ ] App runs under Python 3.13 (or the model rebuilt under the chosen version)
-- [ ] `/_stcore/health` returns `ok`
+- [ ] `/~/+/healthz` returns `ok`
 - [ ] Onboarding box visible in an incognito window
 - [ ] One feedback submission lands in durable storage
 - [ ] `REVIEWPULSE_APP_URL` set; uptime workflow green

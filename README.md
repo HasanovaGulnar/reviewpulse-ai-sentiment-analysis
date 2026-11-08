@@ -6,12 +6,12 @@ analyze one review or upload a CSV batch. Each result is classified as
 **negative**, **neutral**, or **positive**, with a confidence score, a
 per-class probability breakdown and a batch sentiment summary.
 
-**Live app:** <https://bargain-merry-corps-postal.trycloudflare.com>
+**Live app:** <https://reviewpulse-gulnar.streamlit.app>
 
-> The link above is a Cloudflare quick tunnel from the development laptop. It is
-> public and shareable while the app and tunnel are running, but the URL changes
-> after a restart. The permanent deployment path is
-> [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+> Deployed on Streamlit Community Cloud's free tier: public, no login, no
+> laptop required. The free tier sleeps after long inactivity and wakes on the
+> next visit, so the first load after a quiet period takes a few seconds.
+> Deployment notes and alternatives are in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 **Case study (public):** <https://hasanovagulnar.github.io/reviewpulse-ai-sentiment-analysis/>
 — the problem, an architecture diagram, three trade-offs and the honest results

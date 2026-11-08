@@ -2,7 +2,7 @@
 
 *A review-triage app for small sellers — and what it cost to make uncertainty visible.*
 
-[Live app](https://bargain-merry-corps-postal.trycloudflare.com) · [Code](https://github.com/HasanovaGulnar/reviewpulse-ai-sentiment-analysis) · [Evaluation report](https://github.com/HasanovaGulnar/reviewpulse-ai-sentiment-analysis/blob/main/reports/EVALUATION.md)
+[Live app](https://reviewpulse-gulnar.streamlit.app) · [Code](https://github.com/HasanovaGulnar/reviewpulse-ai-sentiment-analysis) · [Evaluation report](https://github.com/HasanovaGulnar/reviewpulse-ai-sentiment-analysis/blob/main/reports/EVALUATION.md)
 
 ## The problem
 
@@ -58,7 +58,7 @@ On the 300-review held-out test split:
 
 Macro F1 is **0.664**, accuracy **0.71**. Negative and positive are usable for triage; neutral is not. 21 of 63 neutral reviews were predicted positive and 16 negative. Sorting "negative first" finds most complaints, but a three-star complaint can disappear into the positive pile.
 
-What this does not prove: 300 reviews from the same Yelp sample, not a real shop; 2,000 reviews is a baseline, not a stable neutral estimate. Confidence is uncalibrated: 0.7 is not "70% correct". The app is English-only, has no authentication, caps batches at 5,000 rows, and its logs are ephemeral on the free tier without a webhook. The live link is a temporary tunnel, not a permanent deployment.
+What this does not prove: 300 reviews from the same Yelp sample, not a real shop; 2,000 reviews is a baseline, not a stable neutral estimate. Confidence is uncalibrated: 0.7 is not "70% correct". The app is English-only, has no authentication, caps batches at 5,000 rows, and its logs are ephemeral on the free tier without a webhook. It runs on a free host, so it sleeps after a quiet day and the first visit afterwards is slow.
 
 ## What I'd improve
 

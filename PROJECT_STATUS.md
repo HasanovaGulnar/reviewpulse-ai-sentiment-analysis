@@ -13,13 +13,13 @@
 
 | Requirement | Status | Evidence |
 |---|---|---|
-| Live public URL | Done (temporary) | `https://bargain-merry-corps-postal.trycloudflare.com`; permanent Streamlit Community Cloud path in `docs/DEPLOYMENT.md` |
+| Live public URL | Done | <https://reviewpulse-gulnar.streamlit.app> — Streamlit Community Cloud, free tier, Python 3.13.18, redeploys on every push to `main` |
 | First-time-user instructions | Done | In-app onboarding box; README “First-time users (30 seconds)” |
 | 3+ external testers | Pending | Invitation text in `docs/TESTER_MESSAGE.md`; tracking table in `docs/FEEDBACK.md` |
 | Categorized feedback | Pending | Four categories and triage rules defined; rows pending submissions |
 | At least 1 shipped fix | Partial | Fix 1 (low-confidence results) shipped from QA; the first tester-driven fix is pending the round |
 | Before/after note | Partial | Format and Fix 1 in `docs/BEFORE_AFTER.md`; Fix 2 slot open |
-| Uptime monitoring | Done | `.github/workflows/uptime.yml` checks `/_stcore/health` every 30 minutes |
+| Uptime monitoring | Done | `.github/workflows/uptime.yml` checks the public app every 30 minutes (falls back to `/~/+/healthz` on Streamlit Cloud) |
 | Unique session count | Done | Anonymous session id in `logs/usage.csv`; shown in the sidebar and Model & data tab |
 | Lessons learned | Pending | `docs/LESSONS.md` fills after the round |
 
@@ -45,12 +45,14 @@
 - `python -m unittest discover -s tests -v` — passed (12 tests).
 - `python scripts/verify_project.py` — passed.
 - `python scripts/ui_smoke.py` — passed; onboarding, example, analysis and feedback form.
-- Public health check — `https://bargain-merry-corps-postal.trycloudflare.com/_stcore/health` returns `ok`.
+- Public health check — `https://reviewpulse-gulnar.streamlit.app/~/+/healthz` returns `ok`.
+- Streamlit Cloud build log — Python 3.13.18, all pinned packages resolved, app started.
 
 ## Honest limitation
 
 This is a triage assistant, not an automated customer-service decision maker.
 Its neutral class is notably weaker than its positive and negative classes; the
-evaluation report makes that limitation explicit. The public link is a temporary
-tunnel, and the external tester round has not yet been completed, so the
-feedback table and the tester-driven fix are still open.
+evaluation report makes that limitation explicit. The deployment is on a free
+tier: it sleeps after long inactivity and its `logs/*.csv` files are per-instance
+unless a webhook is configured. The external tester round has not yet been
+completed, so the feedback table and the tester-driven fix are still open.
