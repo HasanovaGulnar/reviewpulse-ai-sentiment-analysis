@@ -18,7 +18,7 @@ The hard part was not training a classifier. It was making a deliberately small 
 
 *Offline training produces a 714 KB artifact committed to Git; the Streamlit runtime serves single reviews, batch CSV and feedback, with optional durable logging.*
 
-A request goes through one function that normalises the text, runs `predict_proba`, and returns the label, confidence and three probabilities. The same code serves both tabs. Feedback, anonymous session counts and failed predictions go to local CSVs, with an optional webhook. A scheduled GitHub Actions job pings the health endpoint every 30 minutes.
+A request goes through one function that normalises the text, runs `predict_proba`, and returns the label, confidence and three probabilities. The same code serves both tabs. Feedback, anonymous session counts and failed predictions go to local CSVs, with an optional webhook. A scheduled GitHub Actions job pings the app's public status endpoint every 30 minutes.
 
 The model is trained offline on 2,000 real Yelp reviews: 1–2 stars → negative, 3 → neutral, 4–5 → positive. Split 70/15/15, seed 42. The 714 KB artifact is committed, so deployment never downloads data or trains at boot.
 

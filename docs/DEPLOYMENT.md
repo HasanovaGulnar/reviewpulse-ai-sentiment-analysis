@@ -21,7 +21,7 @@ Official reference:
 | Host | Streamlit Community Cloud, free tier |
 | Branch tracked | `main` (every push redeploys) |
 | Python | 3.13.18 (matches the committed artifact) |
-| Health endpoint | `https://reviewpulse-gulnar.streamlit.app/~/+/healthz` → `ok` |
+| Public status | `https://reviewpulse-gulnar.streamlit.app/api/v2/app/status` → `"status": 5`, `"viewerAuthEnabled": false` |
 | Uptime check | `.github/workflows/uptime.yml`, every 30 minutes |
 
 Two things to know about the free tier: the app sleeps after a long period
@@ -58,10 +58,12 @@ app → Reboot**. To change the Python version: **Manage app → Settings**.
 6. Click **Deploy** and wait 2–4 minutes.
 7. Verify:
    - the app loads: `https://<your-subdomain>.streamlit.app`
-   - the health endpoint returns `ok`:
-     `https://<your-subdomain>.streamlit.app/~/+/healthz`
-     (Community Cloud serves the app itself behind a proxy, so
-     `/_stcore/health` returns the HTML shell rather than `ok` there.)
+   - the public status API reports the container as running:
+     `https://<your-subdomain>.streamlit.app/api/v2/app/status`
+     should contain `"status": 5` and `"viewerAuthEnabled": false`.
+     (Community Cloud proxies the app, so `/_stcore/health` and
+     `/~/+/healthz` are not usable from outside a browser; the status API is
+     the app-specific signal the uptime workflow uses.)
 8. Copy the URL into `README.md` and set the repo variable used by the uptime
    workflow:
 
@@ -164,11 +166,13 @@ ephemeral, so the same feedback guidance applies.
 ## Monitoring and session counts
 
 - **Uptime:** `.github/workflows/uptime.yml` checks the app every 30 minutes and
-  fails the job when it is down. It tries `/_stcore/health` first and falls back
-  to `/~/+/healthz`, the endpoint Streamlit Community Cloud answers with `ok`.
-  History is the Actions tab. Set `REVIEWPULSE_APP_URL` first. GitHub may delay
-  scheduled runs on the free tier; for stricter checks use a free UptimeRobot
-  monitor (5-minute interval).
+  fails the job when it is down. It reads the public
+  `/api/v2/app/status` endpoint and expects `"status": 5` (running) plus
+  `"viewerAuthEnabled": false`, then confirms `GET /` returns 200 after the
+  anonymous session redirect. History is the Actions tab. Set
+  `REVIEWPULSE_APP_URL` first. GitHub may delay scheduled runs on the free tier;
+  for stricter checks use a free UptimeRobot monitor (5-minute interval) on the
+  app URL.
 - **Errors:** the app logs unhandled prediction errors to `logs/errors.csv` and
   shows the tester a short reference id (`Reference: 1a2b3c4d`). On Cloud this
   file is ephemeral — forward it with the webhook or read the app logs.
@@ -200,7 +204,7 @@ streamlit run app.py
 - [ ] Repo pushed to `main`
 - [ ] `git ls-files models/` shows `reviewpulse_sentiment.joblib`
 - [ ] App runs under Python 3.13 (or the model rebuilt under the chosen version)
-- [ ] `/~/+/healthz` returns `ok`
+- [ ] `/api/v2/app/status` shows `"status": 5` and `"viewerAuthEnabled": false`
 - [ ] Onboarding box visible in an incognito window
 - [ ] One feedback submission lands in durable storage
 - [ ] `REVIEWPULSE_APP_URL` set; uptime workflow green

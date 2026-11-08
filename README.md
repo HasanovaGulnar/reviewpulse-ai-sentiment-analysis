@@ -151,12 +151,14 @@ exercises the example button, the single-review path and the feedback form.
 ## Deployment and monitoring
 
 - **Deployment:** [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers Streamlit
-  Community Cloud (permanent URL, Python 3.13, secrets), a Cloudflare quick
-  tunnel (the current temporary link) and Hugging Face Spaces, plus a
-  troubleshooting table for the common build failures.
-- **Uptime:** `.github/workflows/uptime.yml` pings `/_stcore/health` every 30
-  minutes. Set the repository variable `REVIEWPULSE_APP_URL` to the public URL.
-  For stricter checks, a free UptimeRobot monitor works without code changes.
+  Community Cloud (the live URL, Python 3.13, secrets), a Cloudflare quick
+  tunnel for local demos and Hugging Face Spaces, plus a troubleshooting table
+  for the common build failures.
+- **Uptime:** `.github/workflows/uptime.yml` checks the public
+  `/api/v2/app/status` endpoint (expects `"status": 5`) and the home page every
+  30 minutes. Set the repository variable `REVIEWPULSE_APP_URL` to the public
+  URL. For stricter checks, a free UptimeRobot monitor works without code
+  changes.
 - **Unique sessions:** every browser session gets a random id and one
   `session_start` row. The sidebar and **Model & data** tab show unique
   sessions, analyses and review counts for the running instance. On a hosted

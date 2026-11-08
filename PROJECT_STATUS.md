@@ -19,7 +19,7 @@
 | Categorized feedback | Pending | Four categories and triage rules defined; rows pending submissions |
 | At least 1 shipped fix | Partial | Fix 1 (low-confidence results) shipped from QA; the first tester-driven fix is pending the round |
 | Before/after note | Partial | Format and Fix 1 in `docs/BEFORE_AFTER.md`; Fix 2 slot open |
-| Uptime monitoring | Done | `.github/workflows/uptime.yml` checks the public app every 30 minutes (falls back to `/~/+/healthz` on Streamlit Cloud) |
+| Uptime monitoring | Done | `.github/workflows/uptime.yml` checks the public `/api/v2/app/status` endpoint (`"status": 5`) and the home page every 30 minutes |
 | Unique session count | Done | Anonymous session id in `logs/usage.csv`; shown in the sidebar and Model & data tab |
 | Lessons learned | Pending | `docs/LESSONS.md` fills after the round |
 
@@ -45,7 +45,7 @@
 - `python -m unittest discover -s tests -v` — passed (12 tests).
 - `python scripts/verify_project.py` — passed.
 - `python scripts/ui_smoke.py` — passed; onboarding, example, analysis and feedback form.
-- Public health check — `https://reviewpulse-gulnar.streamlit.app/~/+/healthz` returns `ok`.
+- Public status check — `https://reviewpulse-gulnar.streamlit.app/api/v2/app/status` returns `"status": 5` with `"viewerAuthEnabled": false` (public, running).
 - Streamlit Cloud build log — Python 3.13.18, all pinned packages resolved, app started.
 
 ## Honest limitation
